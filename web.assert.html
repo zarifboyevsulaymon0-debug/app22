@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>WebAsset PRO - Junior Dev Suite</title>
+    <style>
+        :root {
+            --bg: #0a192f;
+            --card: #112240;
+            --accent: #64ffda;
+            --text: #ccd6f6;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Consolas', monospace;
+            padding: 30px; margin: 0;
+        }
+
+        h1 { text-align: center; color: var(--accent); letter-spacing: 3px; }
+
+        .dashboard {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .tool-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #233554;
+            transition: 0.3s;
+        }
+
+        .tool-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        h3 { color: var(--accent); border-bottom: 1px solid #233554; padding-bottom: 10px; }
+
+        input, textarea {
+            width: 100%; background: #020c1b; border: 1px solid #233554;
+            color: var(--accent); padding: 12px; border-radius: 6px;
+            margin: 10px 0; box-sizing: border-box; outline: none;
+        }
+
+        button {
+            width: 100%; background: transparent; border: 1px solid var(--accent);
+            color: var(--accent); padding: 10px; border-radius: 6px;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+
+        button:hover { background: rgba(100, 255, 218, 0.1); }
+
+        .result {
+            margin-top: 15px; padding: 10px; background: #020c1b;
+            border-radius: 4px; font-size: 13px; color: #8892b0; min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🛠️ WEB-ASSET PRO</h1>
+
+    <div class="dashboard">
+        <!-- 1. CSS Box Shadow Generator -->
+        <div class="tool-card">
+            <h3>🎨 Shadow Generator</h3>
+            <label>Soya darajasi:</label>
+            <input type="range" id="shadowRange" min="0" max="50" value="10" oninput="genShadow()">
+            <div id="boxPreview" style="width:100%; height:60px; background:var(--accent); margin:10px 0; border-radius:8px;"></div>
+            <div class="result" id="shadowOut">box-shadow: 0px 10px 20px rgba(0,0,0,0.3);</div>
+        </div>
+
+        <!-- 2. URL Encoder/Decoder -->
+        <div class="tool-card">
+            <h3>🔗 URL Converter</h3>
+            <input type="text" id="urlInput" placeholder="Linkni kiriting...">
+            <div style="display:flex; gap:5px;">
+                <button onclick="urlAction('enc')">ENCODE</button>
+                <button onclick="urlAction('dec')">DECODE</button>
+            </div>
+            <div class="result" id="urlOut">Natija shu yerda...</div>
+        </div>
+
+        <!-- 3. Password Strength Checker -->
+        <div class="tool-card">
+            <h3>🔐 Password Check</h3>
+            <input type="password" id="passIn" oninput="checkPass()" placeholder="Parolni tekshirish...">
+            <div class="result" id="passOut">Darajasi: --</div>
+        </div>
+    </div>
+
+    <script>
+        // CSS Shadow Generator logikasi
+        function genShadow() {
+            const val = document.getElementById('shadowRange').value;
+            const shadow = `0px ${val}px ${val*2}px rgba(0,0,0,0.5)`;
+            document.getElementById('boxPreview').style.boxShadow = shadow;
+            document.getElementById('shadowOut').innerText = `box-shadow: ${shadow};`;
+        }
+
+        // URL Converter logikasi
+        function urlAction(type) {
+            const input = document.getElementById('urlInput').value;
+            const out = document.getElementById('urlOut');
+            try {
+                out.innerText = type === 'enc' ? encodeURIComponent(input) : decodeURIComponent(input);
+            } catch(e) { out.innerText = "Xato ulanish!"; }
+        }
+
+        // Password Checker logikasi
+        function checkPass() {
+            const pass = document.getElementById('passIn').value;
+            const out = document.getElementById('passOut');
+            if(pass.length < 5) { out.innerText = "Daraja: Bo'sh 🔴"; out.style.color = "#ff4d4d"; }
+            else if(pass.length < 10) { out.innerText = "Daraja: O'rta 🟡"; out.style.color = "yellow"; }
+            else { out.innerText = "Daraja: Kuchli 🟢"; out.style.color = "#64ffda"; }
+        }
+
+        // Initial call
+        genShadow();
+    </script>
+</body>
+</html>
